@@ -45,12 +45,12 @@ const Signin = ({ history }) => {
             },
         })
             .then(resp => {
-                console.log('resp', resp);
+                G.log('resp', resp);
                 localStorage.setItem('authToken', resp.data.user.token);
                 setIsDone(true);
             })
             .catch(error => {
-                console.log('Error: ', error.message);
+                G.log('Error: ', error.message);
             });
     };
 
@@ -62,11 +62,9 @@ const Signin = ({ history }) => {
     } = useValidation(configs, submitForm);
 
     useEffect(() => {
-        console.log('useEffect', history);
         if (isDone) history.replace('/contracts');
     }, [history, isDone]);
 
-    console.log('formState', isSubmitting);
     return (
         <div className="wrap">
             <form onSubmit={handleSubmit} noValidate>

@@ -38,7 +38,7 @@ const NewContract = props => {
                     data: { contracts: contracts.concat([createContract]) },
                 });
             } catch (err) {
-                console.log('cache error: ', err);
+                G.log('cache error: ', err);
             }
         },
     });
@@ -54,7 +54,7 @@ const NewContract = props => {
                 props.history.push('/contracts');
             })
             .catch(error => {
-                console.log('Error: ', error.message);
+                G.log('Error: ', error.message);
             });
     };
 
@@ -64,7 +64,7 @@ const NewContract = props => {
         handleChange,
         handleSubmit,
     } = useValidation(configs, submitForm);
-    console.log('NewContract formState', error, formState);
+    G.log('NewContract formState', error, formState);
 
     return (
         <div className="wrap">

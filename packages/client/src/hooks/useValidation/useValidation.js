@@ -1,3 +1,4 @@
+/* @flow */
 import { useEffect, useReducer, useCallback, useRef } from 'react';
 import validate from './validate';
 import {
@@ -79,7 +80,7 @@ const useForm = (configs: ConfigsType = {}, submitCallback: func): any => {
     function onChange(name, value) {
         if (!name) return;
         const [ok, message] = validateForm(name, value, formState);
-        console.log('ok', ok);
+        G.log('ok', ok);
         dispatch({
             type: 'SET_FORM_STATE',
             payload: {

@@ -62,7 +62,7 @@ const Register = props => {
                 props.history.push('/signin');
             })
             .catch(error => {
-                console.log('Error: ', error.message);
+                G.log('Error: ', error.message);
             });
     };
 
@@ -72,7 +72,7 @@ const Register = props => {
         handleChange,
         handleSubmit,
     } = useValidation(configs, submitForm);
-    console.log('Signup formState', error, formState);
+    G.log('Signup formState', error, formState);
 
     return (
         <div className="wrap">

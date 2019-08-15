@@ -3,13 +3,15 @@
     "extends": ["plugin:flowtype/recommended", "react-app"],
     "globals": {
         "localStorage": true,
-        "Cookies": true
+        "Cookies": true,
+        "G": true
     },
     "rules": {
         "semi": ["error", "always"],
         "eqeqeq": "off",
         "no-useless-escape": "off",
         "no-unused-vars": "off",
+        "flowtype/no-types-missing-file-annotation": 0,
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn"
     },

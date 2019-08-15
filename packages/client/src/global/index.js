@@ -1,23 +1,7 @@
-import React, { useContext } from 'react';
+const logFunc =
+    process.env.REACT_APP_ENV === 'development' ? console.log : () => {};
 
-const GlobalStateContext = React.createContext({
-    globalState: {},
-});
-
-export function withGlobalState(Component) {
-    return function WrapperComponent(props) {
-        return (
-            <GlobalStateContext.Consumer>
-                {contexts => <Component {...props} {...contexts} />}
-            </GlobalStateContext.Consumer>
-        );
-    };
-}
-
-export const useGlobalStateContext = () => {
-    const context = useContext(GlobalStateContext);
-    return { ...context.globalState };
+export const log = (...args) => {
+    const enhancedArgs = args.map(arg => JSON.stringify(arg, null, 2));
+    logFunc.apply(console, enhancedArgs);
 };
-
-export const GlobalStateProvider = GlobalStateContext.Provider;
-export const GlobalStateConsumer = GlobalStateContext.Consumer;
