@@ -1,0 +1,17 @@
+{
+    "parser": "babel-eslint",
+    "extends": ["plugin:flowtype/recommended", "react-app"],
+    "globals": {
+        "localStorage": true,
+        "Cookies": true
+    },
+    "rules": {
+        "semi": ["error", "always"],
+        "eqeqeq": "off",
+        "no-useless-escape": "off",
+        "no-unused-vars": "off",
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn"
+    },
+    "plugins": ["react", "react-hooks", "flowtype"]
+}

@@ -1,0 +1,16 @@
+type Contract {
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  title: String! @unique
+  description: String!
+  owner: User
+}
+
+type User {
+  id: ID! @id
+  email: String! @unique
+  name: String!
+  password: String!
+  contracts: [Contract!]!
+}

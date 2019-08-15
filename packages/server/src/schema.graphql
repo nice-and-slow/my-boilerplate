@@ -1,0 +1,24 @@
+# import Contract from './generated/prisma.graphql'
+# import User from './generated/prisma.graphql'
+
+type Query {
+  fetchAllContracts: [Contract!]!
+  fetchUser: User
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+}
+
+type Mutation {
+  createContract(title: String!, description: String!): Contract!
+  signupUser(name: String!, email: String!, password: String!): User!
+  loginUser(email: String!, password: String!): AuthenticationPayload!
+}
+
+type AuthenticationPayload {
+  token: String!
+  user: User
+}
