@@ -34,9 +34,8 @@ const useForm = (config = {}, submitCallback) => {
     if (typeof config === 'function') config = config(state.values);
     if (!config.fields) throw Error('invalid config');
 
-    const handleSubmit = useCallback(onSubmit, [state.values]);
     const errors = useMemo(() => getErrors(state, config), [state, config]);
-
+    const handleSubmit = useCallback(onSubmit, [state.values, errors]);
     const isFormValid = useMemo(
         () => Object.values(errors).every(error => error === null),
         [errors],
@@ -92,21 +91,23 @@ const useForm = (config = {}, submitCallback) => {
 
     function onSubmit(event) {
         if (event) event.preventDefault();
-
-        submitCallback && submitCallback({ values: state.values });
+        submitCallback && submitCallback({ values: state.values, isFormValid });
         dispatch({ type: SUBMIT });
     }
 
     function getFieldProps(fieldName) {
         return {
             onChange: e => {
-                const { value } = e.target;
+                const { type, value } = e.target;
 
                 if (!config.fields[fieldName]) return;
 
                 dispatch({
                     type: UPDATE,
-                    payload: { [fieldName]: value },
+                    payload: {
+                        [fieldName]:
+                            type === 'checkbox' ? e.target.checked : value,
+                    },
                 });
             },
             onBlur: () => {

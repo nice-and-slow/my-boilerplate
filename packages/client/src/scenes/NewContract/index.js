@@ -7,6 +7,7 @@ import { GET_CONTRACTS_QUERY, CREATE_CONTRACT } from 'queries';
 import TextField from 'components/TextField';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
+import Checkbox from 'components/Checkbox';
 import { Plus } from 'styled-icons/fa-solid';
 // hooks
 import useValidation, { isRequired, lengthBetween } from 'hooks/useValidation';
@@ -23,6 +24,9 @@ const configs = {
         },
         description: {
             rules: [[isRequired, '내용을 입력하세요.']],
+        },
+        isAllowed: {
+            rules: [[isRequired, '동의해주세요.']],
         },
     },
     showErrors: 'blur',
@@ -46,11 +50,12 @@ const NewContract = props => {
         },
     });
 
-    const submitForm = context => {
+    const submitForm = ({ values, isFormValid }) => {
+        if (!isFormValid) return;
         createContract({
             variables: {
-                title: context.values['title'],
-                description: context.values['description'],
+                title: values['title'],
+                description: values['description'],
             },
         })
             .then(() => {
@@ -65,7 +70,7 @@ const NewContract = props => {
         configs,
         submitForm,
     );
-    G.log('NewContract ', error);
+    G.log('NewContract ', isSubmitted);
 
     return (
         <div className="wrap">
@@ -84,14 +89,18 @@ const NewContract = props => {
                     title="Contract Title"
                     {...getFieldProps('title')}
                 />
-                <br />
                 <TextField
                     placeholder="Description"
                     title="description"
                     {...getFieldProps('description')}
                     multiLine
                 />
-                <br />
+                <div style={{ marginBottom: 15 }}>
+                    <Checkbox
+                        {...getFieldProps('isAllowed')}
+                        label="이용약관 동의"
+                    />
+                </div>
                 <Button
                     type="submit"
                     content="Create Contract"
