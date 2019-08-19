@@ -73,7 +73,6 @@ const Register = props => {
         configs,
         submitForm,
     );
-    G.log('Signup formState', error);
 
     return (
         <div className="wrap">

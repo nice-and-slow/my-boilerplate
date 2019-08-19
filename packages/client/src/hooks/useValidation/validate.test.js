@@ -1,59 +1,44 @@
 import validate from './validate';
 
-import {
-    isRequired,
-    isEmail,
-    lengthBetween,
-    hasCheckedValue,
-} from './constraints';
+import { isRequired, isEmail, lengthBetween, hasCheckedValue } from './rules';
 
 describe('VALIDATE', () => {
-    let validator;
-    let validateForm;
+    let validatorConfig;
 
     beforeAll(() => {
-        validator = {
-            email: [
-                [isRequired, 'email을 입력하세요.'],
-                [isEmail, '올바른 email 주소가 아닙니다.'],
-            ],
+        validatorConfig = {
+            email: {
+                rules: [
+                    [isRequired, 'email을 입력하세요.'],
+                    [isEmail, '올바른 email 주소가 아닙니다.'],
+                ],
+            },
+            password: {
+                rules: [
+                    [isRequired, '비밀번호를 입력하세요.'],
+                    [lengthBetween(8, 35), '8-35 자를 입력하세요.'],
+                ],
+            },
         };
-        validateForm = validate(validator);
     });
 
-    it('should initialize validator(curried function) with validation rules', () => {
-        expect(validateForm).toBeInstanceOf(Function);
-    });
-
-    it('should return [ok: boolean, message: string] for running validation', () => {
-        const [ok, message] = validateForm('email', 'abc@abc.com');
-
-        expect(typeof ok).toBe('boolean');
-        expect(typeof message).toBe('string');
+    it('should return errors Object for running validation', () => {
+        const errors = validate({ email: 'abc@abc.com' }, validatorConfig);
+        expect(Object.prototype.toString.call(errors)).toBe('[object Object]');
     });
 
     describe('email validation', () => {
         it('abc@abc.com', () => {
-            const [ok, message] = validateForm('email', 'abc@abc.com');
-
-            expect(ok).toBe(true);
-            expect(message).toBe('');
+            const errors = validate({ email: 'abc@abc.com' }, validatorConfig);
+            expect(errors['email']).toBe(null);
         });
-
-        it('a bs.sdk', () => {
-            const [ok, message] = validateForm('email', 'a bs.sdk');
-            const errorMsgs = validator.email.map(rule => rule[1]);
-
-            expect(ok).toBe(false);
-            expect(message).toBe(errorMsgs[1]);
-        });
-
         it('empty value', () => {
-            const [ok, message] = validateForm('email', '');
-            const errorMsgs = validator.email.map(rule => rule[1]);
-
-            expect(ok).toBe(false);
-            expect(message).toBe(errorMsgs[0]);
+            const errors = validate({ email: '' }, validatorConfig);
+            expect(errors['email']).toBe(validatorConfig.email.rules[0][1]);
+        });
+        it('a bs.sdk', () => {
+            const errors = validate({ email: 'a bs.sdk' }, validatorConfig);
+            expect(errors['email']).toBe(validatorConfig.email.rules[1][1]);
         });
     });
 });

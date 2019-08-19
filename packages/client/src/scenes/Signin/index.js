@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { withRouter } from 'react-router';
 // apollo
 import { useMutation } from '@apollo/react-hooks';
 // components
@@ -37,20 +36,20 @@ const configs = {
 };
 
 const Signin = ({ history }) => {
-    const [loginUser, { loading, error }] = useMutation(LOGIN_USER);
-    const [isDone, setIsDone] = useState(false);
+    const [loginUser, { data, loading, error }] = useMutation(LOGIN_USER);
 
-    const submitForm = async context => {
-        await loginUser({
+    const submitForm = context => {
+        loginUser({
             variables: {
                 email: context.values['email'],
                 password: context.values['password'],
             },
         })
-            .then(resp => {
+            .then(async resp => {
                 G.log('resp', resp);
-                localStorage.setItem('authToken', resp.data.user.token);
-                setIsDone(true);
+                await localStorage.setItem('authToken', resp.data.user.token);
+
+                history.replace('/contracts');
             })
             .catch(error => {
                 G.log('Error: ', error.message);
@@ -61,10 +60,6 @@ const Signin = ({ history }) => {
         configs,
         submitForm,
     );
-
-    useEffect(() => {
-        if (isDone) history.replace('/contracts');
-    }, [history, isDone]);
 
     return (
         <div className="wrap">
@@ -108,4 +103,4 @@ const Signin = ({ history }) => {
     );
 };
 
-export default withRouter(Signin);
+export default Signin;

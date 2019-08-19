@@ -16,7 +16,6 @@ import Header from 'components/Header';
 // normalize CSS
 import { Normalize } from 'styled-normalize';
 // utils
-import { isLoggedIn } from 'utils';
 import ApolloConfigs from './apolloConfigs';
 import history from './history';
 // styls
@@ -30,8 +29,6 @@ const client = new ApolloClient({
     defaultOptions,
 });
 
-const hasAuth = isLoggedIn();
-
 const routes = (
     <ApolloProvider client={client}>
         <Router history={history}>
@@ -42,16 +39,8 @@ const routes = (
                 <Route exact path="/" component={Main} />
                 <Route path="/signup" component={Signup} />
                 <Route path="/signin" component={Signin} />
-                <PrivateRoute
-                    authed={hasAuth}
-                    path="/contracts"
-                    component={Contracts}
-                />
-                <PrivateRoute
-                    authed={hasAuth}
-                    path="/new"
-                    component={NewContract}
-                />
+                <PrivateRoute path="/contracts" component={Contracts} />
+                <PrivateRoute path="/new" component={NewContract} />
                 <Route path="*" component={NotFound} />
             </Switch>
         </Router>

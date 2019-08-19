@@ -1,9 +1,5 @@
-export const isLoggedIn = function() {
-    const token = localStorage.getItem('authToken');
+const authToken = 'authToken';
 
-    if (token) {
-        //return jwt(token).userId;
-        return true;
-    }
-    return false;
+export const isLoggedIn = () => {
+    return localStorage.getItem(authToken);
 };

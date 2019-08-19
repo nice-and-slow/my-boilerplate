@@ -1,6 +1,6 @@
 import { trimValue } from './utils';
 
-const runValidate = (rules, value) =>
+const validate = (rules, value) =>
     rules.reduce(
         ([isSuccess, message], [isValid, errorMessage]) => {
             if (!isSuccess) return [false, message];
@@ -13,13 +13,13 @@ const runValidate = (rules, value) =>
     );
 
 function validateField(fieldValue = '', rules = []) {
-    const errors = runValidate(rules, fieldValue);
+    const errors = validate(rules, fieldValue);
 
     if (!errors[0]) return errors[1];
     return null;
 }
 
-export default function validate(fieldValues, fieldConfigs) {
+export default function validateFields(fieldValues, fieldConfigs) {
     return Object.keys(fieldConfigs).reduce((errors, fieldName) => {
         const fieldConfig = fieldConfigs[fieldName];
         const fieldValue = fieldValues[fieldName];

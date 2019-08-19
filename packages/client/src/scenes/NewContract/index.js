@@ -14,15 +14,18 @@ import useValidation, { isRequired, lengthBetween } from 'hooks/useValidation';
 import { Header, Title, ButtonWrap } from './styles';
 
 const configs = {
-    title: {
-        rules: [
-            [isRequired, '제목을 입력하세요.'],
-            [lengthBetween(1, 35), '1-35 자를 입력하세요.'],
-        ],
+    fields: {
+        title: {
+            rules: [
+                [isRequired, '제목을 입력하세요.'],
+                [lengthBetween(1, 35), '1-35 자를 입력하세요.'],
+            ],
+        },
+        description: {
+            rules: [[isRequired, '내용을 입력하세요.']],
+        },
     },
-    description: {
-        rules: [[isRequired, '내용을 입력하세요.']],
-    },
+    showErrors: 'blur',
 };
 
 const NewContract = props => {
@@ -43,8 +46,8 @@ const NewContract = props => {
         },
     });
 
-    const submitForm = async context => {
-        await createContract({
+    const submitForm = context => {
+        createContract({
             variables: {
                 title: context.values['title'],
                 description: context.values['description'],
@@ -62,7 +65,7 @@ const NewContract = props => {
         configs,
         submitForm,
     );
-    G.log('NewContract formState', error);
+    G.log('NewContract ', error);
 
     return (
         <div className="wrap">

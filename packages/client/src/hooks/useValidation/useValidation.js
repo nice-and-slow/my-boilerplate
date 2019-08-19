@@ -31,10 +31,10 @@ function reducer(state, { type, payload }) {
 
 const useForm = (config = {}, submitCallback) => {
     const [state, dispatch] = useReducer(reducer, getInitialState(config));
-
     if (typeof config === 'function') config = config(state.values);
+    if (!config.fields) throw Error('invalid config');
 
-    const handleSubmit = useCallback(onSubmit, []);
+    const handleSubmit = useCallback(onSubmit, [state.values]);
     const errors = useMemo(() => getErrors(state, config), [state, config]);
 
     const isFormValid = useMemo(
@@ -47,12 +47,6 @@ const useForm = (config = {}, submitCallback) => {
 
         dispatch({ type: VALIDATE, payload: errors });
     }, [state.values, config.fields]);
-
-    useEffect(() => {
-        if (state.isSubmitted && submitCallback) {
-            submitCallback({ values: state.values, isFormValid });
-        }
-    }, [isFormValid, state.isSubmitted, state.values, submitCallback]);
 
     function getErrors(state, config) {
         if (config.showErrors === 'always') {
@@ -74,6 +68,8 @@ const useForm = (config = {}, submitCallback) => {
         if (typeof config === 'function') {
             config = config({});
         }
+
+        if (!config.fields) throw Error('invalid config');
 
         const initial = Object.keys(config.fields).reduce(
             ([initialValues, initialBlurred], fieldName) => {
@@ -97,6 +93,7 @@ const useForm = (config = {}, submitCallback) => {
     function onSubmit(event) {
         if (event) event.preventDefault();
 
+        submitCallback && submitCallback({ values: state.values });
         dispatch({ type: SUBMIT });
     }
 

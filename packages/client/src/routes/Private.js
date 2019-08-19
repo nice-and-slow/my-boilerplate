@@ -1,16 +1,14 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
+// utils
+import { isLoggedIn } from 'utils';
 
-export default function PrivateRoute({
-    component: Component,
-    authed,
-    ...rest
-}) {
+export default function PrivateRoute({ component: Component, ...rest }) {
     return (
         <Route
             {...rest}
             render={props =>
-                authed === true ? (
+                isLoggedIn() ? (
                     <Component {...props} />
                 ) : (
                     <Redirect
