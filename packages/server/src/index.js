@@ -21,6 +21,20 @@ const resolvers = {
         fetchAllContracts: (parent, args, ctx, info) => {
             return ctx.prisma.query.contracts({}, info);
         },
+        fetchContracts: (parent, args, ctx, info) => {
+            const userId = retrievUserIdFromToken(ctx);
+            console.log(`userId ${userId}`);
+            return ctx.prisma.query.contracts(
+                {
+                    where: {
+                        owner: {
+                            id: userId,
+                        },
+                    },
+                },
+                info,
+            );
+        },
         fetchUser: (parent, args, ctx, info) => {
             const userId = retrievUserIdFromToken(ctx);
             console.log(`userId ${userId}`);

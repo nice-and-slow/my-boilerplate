@@ -26,9 +26,19 @@ export const REGISTER_USER = gql`
     }
 `;
 
-export const GET_CONTRACTS_QUERY = gql`
+export const GET_ALL_CONTRACTS_QUERY = gql`
     query getAllContracts {
         contracts: fetchAllContracts {
+            id
+            title
+            description
+        }
+    }
+`;
+
+export const GET_CONTRACTS_QUERY = gql`
+    query getAllContracts {
+        contracts: fetchContracts {
             id
             title
             description

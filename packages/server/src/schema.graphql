@@ -3,6 +3,7 @@
 
 type Query {
   fetchAllContracts: [Contract!]!
+  fetchContracts: [Contract!]!
   fetchUser: User
 }
 
