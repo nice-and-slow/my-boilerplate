@@ -9,7 +9,7 @@ import {
 
 export const TextFieldWrap = styled.div`
     width: 100%;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
 `;
 
 export const TextFieldLabel = styled.label`
@@ -40,7 +40,7 @@ export const TextFieldInput = styled.input`
     height: 3.6em;
     font-size: inherit;
     padding: 1em;
-    padding-top: ${props => (props.isLabelActive ? '2.1em' : '1em')};
+    padding-top: ${props => (props.isLabelActive ? '2.1em' : '')};
     background-color: #fff;
     border: 0;
     box-shadow: 0 0 0 1px ${borderColor};
@@ -54,7 +54,7 @@ export const TextFieldInput = styled.input`
 
 export const TextFieldError = styled.div`
     display: block;
-    margin-top: 5px;
     font-size: ${smallFontSize};
     color: ${errorTextColor};
+    margin-top: 5px;
 `;

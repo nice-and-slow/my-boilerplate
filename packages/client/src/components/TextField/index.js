@@ -9,18 +9,12 @@ import {
     TextFieldError,
 } from './styles';
 // constants
-const ACTIVATE_FIELD = 'ACTIVATE_FIELD';
-const DISABLE_FOCUS = 'DISABLE_FOCUS';
 const UPDATE_INPUT_VALUE = 'UPDATE_INPUT_VALUE';
 
 function reducer(state, { type, value }) {
     switch (type) {
-        case ACTIVATE_FIELD:
-            return { ...state, isLabelActive: true };
-        case DISABLE_FOCUS:
-            return { ...state, isLabelActive: false };
         case UPDATE_INPUT_VALUE:
-            return { ...state, inputValue: value, isLabelActive: true };
+            return { ...state, inputValue: value };
         default:
             return state;
     }
@@ -41,12 +35,7 @@ const TextField = memo(
     }) => {
         const [state, dispatch] = useReducer(reducer, {
             inputValue: '',
-            isLabelActive: false,
         });
-
-        const activateField = () => {
-            dispatch({ type: ACTIVATE_FIELD });
-        };
 
         const handleChange = e => {
             e.persist();
@@ -57,9 +46,6 @@ const TextField = memo(
         };
 
         const handleBlur = e => {
-            // if (e.target.value === '') {
-            //     dispatch({ type: DISABLE_FOCUS });
-            // }
             onBlur(e);
         };
 
@@ -80,12 +66,18 @@ const TextField = memo(
                         value={state.inputValue}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        onFocus={activateField}
                         isLabelActive={!!state.inputValue}
                     />
                 </TextFieldLabel>
-                {error && <TextFieldError>{error}</TextFieldError>}
+                <TextFieldError>{error}</TextFieldError>
             </TextFieldWrap>
+        );
+    },
+    (prevProps, newProps) => {
+        return (
+            prevProps.error === newProps.error &&
+            prevProps.disabled === newProps.disabled &&
+            prevProps.value === newProps.value
         );
     },
 );
@@ -108,9 +100,9 @@ TextField.prototype = {
 
 TextField.defaultProps = {
     title: '',
-    error: '',
     type: 'text',
     placeholder: '',
+    error: '',
     disabled: false,
     required: false,
     autoComplete: 'on',
